@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html ng-app="myApp">
+<head>
+    <title>Login and Register</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+</head>
+<body ng-controller="AuthController">
+    <h2>Login or Register</h2>
+    <form ng-submit="login()">
+        <div>
+            <label for="email">Email:</label>
+            <input type="email" id="email" ng-model="user.email" required>
+        </div>
+        <div>
+            <label for="password">Password:</label>
+            <input type="password" id="password" ng-model="user.password" required>
+        </div>
+        <button type="submit">Login</button>
+    </form>
+    <form ng-submit="register()">
+        <div>
+            <label for="registerEmail">Email:</label>
+            <input type="email" id="registerEmail" ng-model="registerUser.email" required>
+        </div>
+        <div>
+            <label for="registerPassword">Password:</label>
+            <input type="password" id="registerPassword" ng-model="registerUser.password" required>
+        </div>
+        <button type="submit">Register</button>
+    </form>
+</body>
+<script>
+    var app = angular.module('myApp', []);
+
+    app.controller('AuthController', function($scope, $http) {
+        $scope.user = {};
+        $scope.registerUser = {};
+
+        $scope.login = function() {
+            $http.post('/api/login', $scope.user)
+                .then(function(response) {
+                    // Handle successful login
+                    console.log('Login successful:', response.data);
+                })
+                .catch(function(error) {
+                    // Handle login error
+                    console.error('Login failed:', error.data);
+                });
+        };
+
+        $scope.register = function() {
+            $http.post('/api/register', $scope.registerUser)
+                .then(function(response) {
+                    // Handle successful registration
+                    console.log('Registration successful:', response.data);
+                })
+                .catch(function(error) {
+                    // Handle registration error
+                    console.error('Registration failed:', error.data);
+                });
+        };
+    });
+</script>
+</html>
